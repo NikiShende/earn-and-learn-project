@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "508959534979",
+    "firebase_url": "https://earnandlearn-4b07f-default-rtdb.firebaseio.com",
+    "project_id": "earnandlearn-4b07f",
+    "storage_bucket": "earnandlearn-4b07f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508959534979:android:8730d541c153431938d0b6",
+        "android_client_info": {
+          "package_name": "com.example.earn_and_learn_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGLkR5n4e8A_CQf-9xH2XGoshYPlqtF_Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508959534979:android:61512b76fd096c5038d0b6",
+        "android_client_info": {
+          "package_name": "com.example.elms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGLkR5n4e8A_CQf-9xH2XGoshYPlqtF_Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
