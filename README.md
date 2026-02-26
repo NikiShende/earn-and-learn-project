@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # earn_and_learn_project
 
 A new Flutter project.
@@ -14,3 +15,7 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# earn-and-learn-project
+earn and learn college app
+>>>>>>> 105f2cb2b7fbccefe4cdeccf91109f5d7816f538
