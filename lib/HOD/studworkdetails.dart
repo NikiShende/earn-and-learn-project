@@ -41,20 +41,27 @@ class _StudentDetailPageState extends State<StudentDetailPage>
       final List<Map<String, dynamic>> list = [];
       if (event.snapshot.value != null) {
         final workEntries = Map<String, dynamic>.from(event.snapshot.value as Map);
-        workEntries.forEach((id, workRaw) {
-          final work = Map<String, dynamic>.from(workRaw);
-          list.add({
-            "workId": id,
-            "title": work["title"],
-            "description": work["description"],
-            "status": work["status"],
-            "hours": work["hours"],
-            "fromTime": work["fromTime"],
-            "toTime": work["toTime"],
-            "workplace": work["workplace"],
-            "date": work["date"],
-          });
-        });
+     workEntries.forEach((id, workRaw) {
+  final work = Map<String, dynamic>.from(workRaw);
+
+  final status =
+      (work["status"] ?? "").toString().toLowerCase();
+
+  // ✅ SHOW ONLY APPROVED BY SUB
+  if (status == "approved_by_sub" || status == "verified_by_hod"|| status == "rejected")  {
+    list.add({
+      "workId": id,
+      "title": work["title"],
+      "description": work["description"],
+      "status": status,
+      "hours": work["hours"],
+      "fromTime": work["fromTime"],
+      "toTime": work["toTime"],
+      "workplace": work["workplace"],
+      "date": work["date"],
+    });
+  }
+});
       }
       setState(() {
         studentWorks = list;
@@ -72,8 +79,10 @@ class _StudentDetailPageState extends State<StudentDetailPage>
 
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
-      case 'approved':
-        return Colors.green;
+      case 'approved_by_sub':
+    case 'verified_by_hod':
+      return Colors.green;
+     
       case 'rejected':
         return Colors.red;
       default:
@@ -114,7 +123,7 @@ class _StudentDetailPageState extends State<StudentDetailPage>
               ? const Center(
                   child: Text(
                     "No work entries found",
-                    style: TextStyle(color: Colors.black45, fontSize: 16),
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 )
               : ListView.builder(
@@ -122,7 +131,7 @@ class _StudentDetailPageState extends State<StudentDetailPage>
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   itemBuilder: (context, index) {
                     final w = studentWorks[index];
-                    final status = w["status"] ?? "Pending";
+                    final status = w["status"] ?? "approved_by_sub";
 
                     return AnimatedBuilder(
                       animation: _animationController,

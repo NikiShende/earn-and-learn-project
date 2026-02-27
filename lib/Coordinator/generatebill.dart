@@ -233,7 +233,7 @@ double? editedTotalAmount;
         date = null;
       }
 
-      if ((status == 'approved' || status == 'approved_by_sub') &&
+      if (( status == 'approved_by_sub') &&
     date != null) {
         if (date.month == selectedMonth.month &&
             date.year == selectedMonth.year) {

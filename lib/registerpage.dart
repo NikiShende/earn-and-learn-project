@@ -346,7 +346,7 @@ String selectedActualDepartment = "Computer";
   "Mess",
   "Administrative Office",
   "Exam Section",
-  "NSS Office",
+  "NSS",
   "AICTE IDEA Lab",
 
 

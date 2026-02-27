@@ -1177,13 +1177,13 @@ Widget _studentCard(
 
                 const SizedBox(height: 6),
 
-                Text(
-                  "Total Hours: $totalHours",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.blue,
-                  ),
-                ),
+                // Text(
+                //   "Total Hours: $totalHours",
+                //   style: const TextStyle(
+                //     fontWeight: FontWeight.w600,
+                //     color: Colors.blue,
+                //   ),
+                // ),
               ],
             ),
           ),

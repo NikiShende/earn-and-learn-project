@@ -1107,12 +1107,12 @@ Widget _studentCard(BuildContext context, Map<String, dynamic> data,
                   Text(data["email"] ?? "",
                       style: TextStyle(color: Colors.grey.shade700)),
                   const SizedBox(height: 6),
-                  Text(
-                    "Total Hours: $totalHours",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.blue),
-                  ),
+                  // Text(
+                  //   "Total Hours: $totalHours",
+                  //   style: const TextStyle(
+                  //       fontWeight: FontWeight.w600,
+                  //       color: Colors.blue),
+                  // ),
                 ],
               ),
             ),

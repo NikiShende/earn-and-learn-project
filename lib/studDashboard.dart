@@ -1428,11 +1428,12 @@ class SummaryCards extends StatelessWidget {
             final hours = int.tryParse("${entry['hours'] ?? 0}") ?? 0;
             final status = (entry['status'] ?? '').toString().toLowerCase();
 
-            if (status == "approved") {
-              approvedHours += hours;
-            } else if (status == "pending") {
-              pendingRequests += 1;
-            }
+           if (status == "approved_by_sub" ||
+    status == "verified_by_hod") {
+  approvedHours += hours;
+} else if (status == "pending") {
+  pendingRequests += 1;
+}
           });
         }
 
@@ -1572,7 +1573,7 @@ class ProfileCard extends StatelessWidget {
         final name = data['name'] ?? 'N/A';
         final classYear = data['class'] ?? '';
         final year = data['year'] ?? '';
-        final department = data['department'] ?? '';
+        final department = data['actualDepartment'] ?? '';
 
         return Card(
           shape: RoundedRectangleBorder(
