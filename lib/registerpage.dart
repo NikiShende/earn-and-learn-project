@@ -632,10 +632,22 @@ List<String> actualDepartments = [
 
 
                     buildField(
-                      "Account Number",
-                      controller: accNoCtrl,
-                      isNumber: true,
-                    ),
+  "Account Number",
+  controller: accNoCtrl,
+  isNumber: true,
+  maxLength: 15,
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return "Account Number is required";
+    }
+
+    if (!RegExp(r'^[0-9]{15}$').hasMatch(value)) {
+      return "Account number must be exactly 15 digits";
+    }
+
+    return null;
+  },
+),
 
                     const SizedBox(height: 25),
 
@@ -674,43 +686,53 @@ List<String> actualDepartments = [
       ),
     );
   }
+Widget buildField(
+  String label, {
+  bool isPassword = false,
+  bool isNumber = false,
+  int? maxLength,
+  TextEditingController? controller,
+  String? Function(String?)? validator,
+}) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 12),
+    child: TextFormField(
+      controller: controller,
+      obscureText: isPassword,
+      maxLength: maxLength,
 
-  Widget buildField(
-    String label, {
-    bool isPassword = false,
-    bool isNumber = false,
-    TextEditingController? controller,
-    String? Function(String?)? validator,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: TextFormField(
-        controller: controller,
-        obscureText: isPassword,
-        keyboardType:
-            isNumber ? TextInputType.number : TextInputType.text,
-        inputFormatters:
-            isNumber ? [FilteringTextInputFormatter.digitsOnly] : null,
-        validator: validator ??
-            (value) {
-              if (value == null || value.isEmpty) {
-                return "$label is required";
-              }
-              return null;
-            },
-        decoration: InputDecoration(
-          labelText: label,
-          filled: true,
-          fillColor: Colors.grey.shade200,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide.none,
-          ),
+      keyboardType:
+          isNumber ? TextInputType.number : TextInputType.text,
+
+      inputFormatters:
+          isNumber ? [FilteringTextInputFormatter.digitsOnly] : [],
+
+      validator: validator ??
+          (value) {
+            if (value == null || value.isEmpty) {
+              return "$label is required";
+            }
+
+            if (isNumber && maxLength != null && value.length != maxLength) {
+              return "$label must be exactly $maxLength digits";
+            }
+
+            return null;
+          },
+
+      decoration: InputDecoration(
+        labelText: label,
+        filled: true,
+        fillColor: Colors.grey.shade200,
+        counterText: "", // hides 0/15 text
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide.none,
         ),
       ),
-    );
-  }
-
+    ),
+  );
+}
 Widget actualDepartmentDropdown() {
   return Padding(
     padding: const EdgeInsets.only(bottom: 12),

@@ -406,14 +406,7 @@ Color statusColor(String? status) {
         /// 🔹 WORKPLACE + DATE
         Row(
           children: [
-            const Icon(Icons.work, size: 16, color: Colors.black54),
-            const SizedBox(width: 4),
-            Expanded(
-              child: Text(
-                work.workplace,
-                style: const TextStyle(color: Colors.black54),
-              ),
-            ),
+          
             const Icon(Icons.date_range, size: 16, color: Colors.black54),
             const SizedBox(width: 4),
             Text(

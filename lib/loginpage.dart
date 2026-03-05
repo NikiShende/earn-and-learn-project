@@ -813,25 +813,7 @@ Future<void> loginUser() async {
           ),
 
           /// 🔹 ABOUT ICON (TOP RIGHT)
-          Positioned(
-            top: 50,
-            right: 15,
-            child: IconButton(
-              icon: const Icon(
-                Icons.info_outline,
-                color: Colors.white,
-                size: 26,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const AboutAppPage(),
-                  ),
-                );
-              },
-            ),
-          ),
+       
         ],
       ),
     );

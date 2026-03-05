@@ -565,6 +565,7 @@ if (status != "pending") return;
                 "hours": work["hours"],
                 "date": work["date"],
                 "status": work["status"],
+                 "createdAt": work["createdAt"] ?? 0,
               });
             });
           }
@@ -578,8 +579,13 @@ if (status != "pending") return;
           };
         });
       }
-
+entriesList.sort((a, b) {
+  final aTime = a["createdAt"] ?? 0;
+  final bTime = b["createdAt"] ?? 0;
+  return bTime.compareTo(aTime);
+});
       if (mounted) {
+
   setState(() {
     allEntries = List.from(entriesList);
     uniqueStudents = studentsMap.values.toList();

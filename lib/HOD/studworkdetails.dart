@@ -122,7 +122,7 @@ class _StudentDetailPageState extends State<StudentDetailPage>
           : studentWorks.isEmpty
               ? const Center(
                   child: Text(
-                    "No work entries found",
+                    "No approved work entries found",
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 )

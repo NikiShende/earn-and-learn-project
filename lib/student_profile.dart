@@ -19,6 +19,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
   final TextEditingController courseController = TextEditingController();
   final TextEditingController classController = TextEditingController();
 final TextEditingController accNameCtrl = TextEditingController();
+final TextEditingController workingdeptController = TextEditingController();
 final TextEditingController accNoCtrl = TextEditingController();
 
   bool isLoading = true;
@@ -39,11 +40,10 @@ final TextEditingController accNoCtrl = TextEditingController();
       nameController.text = data['name'] ?? "";
       emailController.text = data['email'] ?? "";
       phoneController.text = data['mobile'] ?? "";
-     final actualDept = data['actualDepartment'] ?? "";
-final workingDept = data['workingDepartment'] ?? "";
+      workingdeptController.text = data['workingDepartment'] ?? "";
 
-courseController.text =
-    "$actualDept (${workingDept.isNotEmpty ? workingDept : 'No Work Dept'})";
+
+
       classController.text = data['class'] ?? "";
       accNameCtrl.text = data['accountHolderName'] ?? "";
       accNoCtrl.text = data['accountNumber'] ?? "";
@@ -61,7 +61,7 @@ courseController.text =
       "name": nameController.text.trim(),
       "email": emailController.text.trim(),
       "phone": phoneController.text.trim(),
-      "course": courseController.text.trim(),
+      "workingDepartment": workingdeptController.text.trim(),
       "class": classController.text.trim(),
       "accountHolderName": accNameCtrl.text.trim(),
       "accountNumber": accNoCtrl.text.trim(),
@@ -73,7 +73,7 @@ courseController.text =
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Profile Updated Successfully")),
+      const SnackBar(content: Text("Profile Updated Successfully"),backgroundColor: Colors.green,),
     );
   }
 
@@ -85,7 +85,7 @@ courseController.text =
       padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 12),
       child: TextField(
         style:TextStyle(
-          color: Colors.white,   // 👈 change this
+          color: Colors.white,
           fontSize: 16,
           fontWeight: FontWeight.w500
         ),
@@ -182,9 +182,9 @@ courseController.text =
                       icon: Icons.phone),
 
                   _buildTextField(
-                      label: "Course",
+                      label: "workingdept",
                       
-                      controller: courseController,
+                      controller: workingdeptController,
                       icon: Icons.school),
 
                   _buildTextField(

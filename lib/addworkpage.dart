@@ -17,7 +17,6 @@ class AddWorkEntryPage extends StatefulWidget {
 
 class _AddWorkEntryPageState extends State<AddWorkEntryPage> {
    late TextEditingController titleController;
-  late TextEditingController workplaceController;
   late TextEditingController dateController;
   late TextEditingController fromController;
   late TextEditingController toController;
@@ -31,18 +30,24 @@ class _AddWorkEntryPageState extends State<AddWorkEntryPage> {
     super.initState();
     final work = widget.workToEdit;
 
-    titleController = TextEditingController(text: work?.title ?? '');
-    workplaceController = TextEditingController(text: work?.workplace ?? '');
-    dateController = TextEditingController(text: work?.date ?? '');
-    fromController = TextEditingController(text: work?.fromTime ?? '');
-    toController = TextEditingController(text: work?.toTime ?? '');
-    hoursController = TextEditingController(text: work?.hours ?? '');
-    statusController = TextEditingController(text: work?.status ?? 'Pending');
-    descriptionController = TextEditingController(text: work?.description ?? '');
+  //   titleController = TextEditingController(text: work?.title ?? '');
+  
+  //   dateController = TextEditingController(text: work?.date ?? '');
+  //   fromController = TextEditingController(text: work?.fromTime ?? '');
+  //   toController = TextEditingController(text: work?.toTime ?? '');
+  //   hoursController = TextEditingController(text: work?.hours ?? '');
+  //   statusController = TextEditingController(text: work?.status ?? 'Pending');
+  //  descriptionController = TextEditingController(text: work?.description ?? '');
     
-    _titleController.text = work?.title ?? '';
-    _descriptionController.text = work?.description ?? '';
-    _selectedWorkplace = work?.workplace;
+   
+    titleController = TextEditingController();
+  dateController = TextEditingController();
+  fromController = TextEditingController();
+  toController = TextEditingController();
+  hoursController = TextEditingController();
+  statusController = TextEditingController();
+  descriptionController = TextEditingController();
+  
     
     if (work != null) {
       _selectedDate = _parseDate(work.date);
@@ -50,49 +55,21 @@ class _AddWorkEntryPageState extends State<AddWorkEntryPage> {
       _toTime = _parseTime(work.toTime);
     }
   }
-  final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController();
+
+ 
 
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _fromTime = TimeOfDay.now();
   TimeOfDay _toTime = TimeOfDay.now();
 
   // 🔹 Workplace options
-  final List<String> workplaces = [
-    "Computer",
-    "Mechanical",
-    "Civil",
-    "ETC",
-    "ECE",
-    "IT",
-    "Chemical",
-    "Library",
-    "Hostel",
-    "A & R",
-    "AIDS",
-    "Instrumentation",
-    "Library",
-    "TPC Coordinator",
-    "Gymkhana",
-    "FE-Chemistry",
-  "Mathematics",
-  "Physics",
-  "Earn and Learn",
-  "Workshop",
-  "Mess",
-  "Administrative Office",
-  "Exam Section",
-  "NSS Office",
-   "AICTE IDEA Lab",
-   
-  ];
+  
 
-  String? _selectedWorkplace;
 
   @override
   void dispose() {
     titleController.dispose();
-    workplaceController.dispose();
+   
     dateController.dispose();
     fromController.dispose();
     toController.dispose();
@@ -101,22 +78,22 @@ class _AddWorkEntryPageState extends State<AddWorkEntryPage> {
     descriptionController.dispose();
     super.dispose();
   }
-  void _saveWork() {
-    final work = WorkEntry(
-      key: widget.workToEdit?.key ?? '',
-      id: widget.workToEdit?.id ?? '',
-      title: titleController.text,
-      workplace: workplaceController.text,
-      date: dateController.text,
-      fromTime: fromController.text,
-      toTime: toController.text,
-      hours: hoursController.text,
-      status: statusController.text,
-      description: descriptionController.text,
-    );
+void _saveWork() {
+  final work = WorkEntry(
+    key: widget.workToEdit?.key ?? '',
+    id: widget.workToEdit?.id ?? '',
+    title: titleController.text,
+    date: dateController.text,
+    fromTime: fromController.text,
+    toTime: toController.text,
+    hours: hoursController.text,
+    status: statusController.text,
+    description: descriptionController.text,
+    workplace: '', // 🔥 ADD THIS
+  );
 
-    Navigator.pop(context, work);
-  }
+  Navigator.pop(context, work);
+}
   // 📅 Date formatter
   String _formatDate(DateTime date) {
     return "${date.day.toString().padLeft(2, '0')} "
@@ -140,12 +117,16 @@ class _AddWorkEntryPageState extends State<AddWorkEntryPage> {
   }
 
   // 🧮 Calculate hours
-  int _calculateHours() {
-    final fromMinutes = _fromTime.hour * 60 + _fromTime.minute;
-    final toMinutes = _toTime.hour * 60 + _toTime.minute;
-    return ((toMinutes - fromMinutes) / 60).round();
+int _calculateHours() {
+  final fromMinutes = _fromTime.hour * 60 + _fromTime.minute;
+  final toMinutes = _toTime.hour * 60 + _toTime.minute;
+
+  if (toMinutes <= fromMinutes) {
+    return 0; // invalid time
   }
 
+  return ((toMinutes - fromMinutes) / 60).floor();
+} 
   // Parse date string back to DateTime
   DateTime _parseDate(String dateStr) {
     try {
@@ -181,7 +162,9 @@ class _AddWorkEntryPageState extends State<AddWorkEntryPage> {
     return TimeOfDay.now();
   }
 Future<void> _saveWorkEntry() async {
-  if (!_formKey.currentState!.validate() || _isLoading) return;
+ final form = _formKey.currentState;
+
+if (form == null || !form.validate() || _isLoading) return;
 
   setState(() => _isLoading = true);
 
@@ -203,26 +186,26 @@ Future<void> _saveWorkEntry() async {
         .child('workEntries');
 
     final workData = {
-      "title": _titleController.text,
-      "workplace": _selectedWorkplace!,
+       "title": titleController.text,
       "date": _formatDate(_selectedDate),
       "fromTime": _formatTime(_fromTime),
       "toTime": _formatTime(_toTime),
       "hours": _calculateHours().toString(),
-      "description": _descriptionController.text,
+     "description": descriptionController.text,
 
       /// ✅ IMPORTANT
       /// keep old status when editing
       "status": widget.workToEdit?.status ?? "Pending",
+      "createdAt": ServerValue.timestamp,
     };
 
     /// =============================
     /// ✏️ EDIT MODE
     /// =============================
-    if (widget.workToEdit != null) {
-      await workRef
-          .child(widget.workToEdit!.key)
-          .update(workData);
+   if (widget.workToEdit != null && widget.workToEdit!.key != null) {
+  await workRef
+      .child(widget.workToEdit!.key!)
+      .update(workData);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -285,7 +268,7 @@ Future<void> _saveWorkEntry() async {
                     children: [
                       /// 🧾 Work Title
                       TextFormField(
-                        controller: _titleController,
+                        controller: titleController,
                         decoration: InputDecoration(
                           labelText: 'Work Title',
                           prefixIcon: const Icon(Icons.work_outline),
@@ -302,31 +285,8 @@ Future<void> _saveWorkEntry() async {
                       const SizedBox(height: 20),
 
                       /// 🔹 Workplace Dropdown
-                      DropdownButtonFormField<String>(
-                        value: _selectedWorkplace,
-                        items: workplaces.map((workplace) {
-                          return DropdownMenuItem(
-                            value: workplace,
-                            child: Text(workplace),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedWorkplace = value;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Workplace',
-                          prefixIcon: const Icon(Icons.apartment),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        validator: (value) =>
-                            value == null || value.isEmpty
-                                ? 'Please select workplace'
-                                : null,
-                      ),
+                    
+                  
 
                       const SizedBox(height: 20),
 
@@ -415,7 +375,7 @@ Future<void> _saveWorkEntry() async {
 
                       /// 📝 Description
                       TextFormField(
-                        controller: _descriptionController,
+                        controller: descriptionController,
                         maxLines: 4,
                         decoration: InputDecoration(
                           labelText: 'Description',
